@@ -149,3 +149,59 @@ def init_db() -> None:
                     (wh2_id, "WH2-PROD", "Production Floor", "PRODUCTION", 300.0),
                 ]
             )
+
+        # 7. Operations table (Lifecycle state machine for receipts, deliveries, transfers, adjustments)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS operations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                reference TEXT NOT NULL UNIQUE,
+                type TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'DRAFT',
+                warehouse_id INTEGER NOT NULL REFERENCES warehouses(id) ON DELETE CASCADE,
+                source_location_id INTEGER REFERENCES locations(id) ON DELETE SET NULL,
+                dest_location_id INTEGER REFERENCES locations(id) ON DELETE SET NULL,
+                partner_name TEXT,
+                notes TEXT,
+                created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                created_at TEXT NOT NULL DEFAULT (datetime('now')),
+                validated_at TEXT
+            );
+        """)
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_operations_type ON operations(type);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_operations_status ON operations(status);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_operations_warehouse ON operations(warehouse_id);")
+
+        # 8. Operation Lines table (Item lines associated with each operation)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS operation_lines (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                operation_id INTEGER NOT NULL REFERENCES operations(id) ON DELETE CASCADE,
+                product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE RESTRICT,
+                quantity REAL NOT NULL,
+                uom TEXT NOT NULL,
+                created_at TEXT NOT NULL DEFAULT (datetime('now'))
+            );
+        """)
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_op_lines_operation ON operation_lines(operation_id);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_op_lines_product ON operation_lines(product_id);")
+
+        # 9. Stock Ledger table (Authoritative immutable audit log of inventory movements)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS stock_ledger (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                operation_id INTEGER REFERENCES operations(id) ON DELETE SET NULL,
+                product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE RESTRICT,
+                source_location_id INTEGER REFERENCES locations(id) ON DELETE SET NULL,
+                dest_location_id INTEGER REFERENCES locations(id) ON DELETE SET NULL,
+                quantity REAL NOT NULL,
+                balance_after REAL NOT NULL,
+                timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+                created_by INTEGER REFERENCES users(id) ON DELETE SET NULL
+            );
+        """)
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_ledger_operation ON stock_ledger(operation_id);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_ledger_product ON stock_ledger(product_id);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_ledger_source ON stock_ledger(source_location_id);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_ledger_dest ON stock_ledger(dest_location_id);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_ledger_timestamp ON stock_ledger(timestamp);")
+
