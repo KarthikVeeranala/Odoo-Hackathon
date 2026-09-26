@@ -16,7 +16,7 @@ StockSense is a production-grade, real-time **Inventory Management System (IMS) 
 
 ---
 
-## 🔗 Quick Submission Links
+## 🔗 Quick Links
 
 | Resource | Link / Path | Description |
 | :--- | :--- | :--- |
@@ -27,7 +27,7 @@ StockSense is a production-grade, real-time **Inventory Management System (IMS) 
 
 ---
 
-## 🔑 Hackathon Demo Evaluator Credentials
+## 🔑 Demo Evaluator Credentials
 
 The login page features a **1-Click Demo Login** button that immediately authenticates evaluators with pre-seeded operational data:
 
