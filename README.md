@@ -21,7 +21,7 @@ StockSense is a production-grade, real-time **Inventory Management System (IMS) 
 | Resource | Link / Path | Description |
 | :--- | :--- | :--- |
 | 🚀 **Live Web Application** | [odoo-hackathon-frontend-gilt.vercel.app](https://odoo-hackathon-frontend-gilt.vercel.app/) | Deployed on Vercel CDN |
-| 🎥 **1080p Walkthrough Video** | [`stocksense_demo_walkthrough.mp4`](stocksense_demo_walkthrough.mp4) | High-definition 2-minute automated walkthrough |
+| 🎥 **1080p Walkthrough Video** | [Google Drive Video Stream](https://drive.google.com/file/d/1aqPKAQ6Ec6oFYYL2_MqHppOGoIc7fgT-/view?usp=drive_link) · [`stocksense_demo_walkthrough.mp4`](stocksense_demo_walkthrough.mp4) | High-definition 4-minute 12-scene full walkthrough |
 | 📖 **Interactive API Swagger** | `http://localhost:8000/docs` | OpenAPI 3.0 interactive specification |
 | 📂 **GitHub Repository** | [sathwik328/Odoo-Hackathon](https://github.com/sathwik328/Odoo-Hackathon) | Monorepo source code & test suites |
 
@@ -158,11 +158,9 @@ npm run dev -- --host 127.0.0.1 --port 3000
 ```
 Open `http://localhost:3000/` and click **"1-Click Admin Login"**.
 
-### 3. Automated HD Video Demo Walkthrough
-To re-run the automated video recorder that generates the 1080p demo walkthrough:
-```bash
-node frontend/record_demo_walkthrough.js
-```
+### 3. Video Demo Walkthrough
+* 🌐 **Online Stream**: [Watch on Google Drive](https://drive.google.com/file/d/1aqPKAQ6Ec6oFYYL2_MqHppOGoIc7fgT-/view?usp=drive_link)
+* 💾 **Local 1080p Recording**: [`stocksense_demo_walkthrough.mp4`](stocksense_demo_walkthrough.mp4) (Complete 4-minute 12-scene walkthrough)
 
 ---
 
