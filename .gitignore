@@ -1,33 +1,48 @@
-# Node
+# Python / Virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+backend/.venv/
+env/
+venv/
+ENV/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Testing & Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / Frontend
 node_modules/
 frontend/node_modules/
 dist/
 frontend/dist/
 dist-ssr/
 frontend/dist-ssr/
+.npm
+
+# Environment variables
+.env
+.env.local
 *.local
 
-# Python / Backend
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-*.sqlite3
-*.db
-
 # IDEs
-.idea/
 .vscode/
+.idea/
 *.swp
 *.swo
 .DS_Store
 
 # Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-*.log
