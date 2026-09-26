@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.config import CORS_ORIGINS
 from app.database import init_db
-from app.routers import auth
+from app.routers import auth, products, warehouses
 
 
 @asynccontextmanager
@@ -84,6 +84,8 @@ async def generic_exception_handler(request: Request, exc: Exception):
 
 # Routers
 app.include_router(auth.router, prefix="/api")
+app.include_router(products.router, prefix="/api")
+app.include_router(warehouses.router, prefix="/api")
 
 
 @app.get("/api/health", tags=["Health"])
