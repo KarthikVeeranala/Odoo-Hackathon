@@ -70,7 +70,7 @@ export const Products: React.FC = () => {
       cell: (p) => (
         <div className="font-medium text-slate-800">
           <span className="text-sm font-semibold">{p.total_on_hand}</span>{' '}
-          <span className="text-xs text-slate-500 font-normal">{p.uom}</span>
+          <span className="text-xs text-slate-500 font-normal">{(p.uom || 'units').replace(/unitsunits/gi, 'units')}</span>
         </div>
       ),
     },
@@ -79,7 +79,7 @@ export const Products: React.FC = () => {
       accessorKey: 'safety_stock',
       cell: (p) => (
         <span className="text-slate-600 text-xs">
-          {p.safety_stock} {p.uom}
+          {p.safety_stock} {(p.uom || 'units').replace(/unitsunits/gi, 'units')}
         </span>
       ),
     },
@@ -88,7 +88,7 @@ export const Products: React.FC = () => {
       accessorKey: 'reorder_quantity',
       cell: (p) => (
         <span className="text-slate-600 text-xs">
-          {p.reorder_quantity} {p.uom}
+          {p.reorder_quantity} {(p.uom || 'units').replace(/unitsunits/gi, 'units')}
         </span>
       ),
     },

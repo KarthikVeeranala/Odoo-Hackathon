@@ -4,6 +4,7 @@ import { Category, ProductCreatePayload } from '../../types/product';
 import productService from '../../services/products';
 import Input from '../common/Input';
 import Button from '../common/Button';
+import { useToast } from '../../context/ToastContext';
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   onSuccess,
   categories,
 }) => {
+  const toast = useToast();
   const [sku, setSku] = useState('');
   const [name, setName] = useState('');
   const [categoryId, setCategoryId] = useState<number | ''>('');
@@ -45,16 +47,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     setIsLoading(true);
 
     try {
+      const cleanUom = (uom.trim() || 'units').replace(/unitsunits/gi, 'units');
       const payload: ProductCreatePayload = {
         sku: sku.trim(),
         name: name.trim(),
         category_id: Number(categoryId),
-        uom: uom.trim() || 'units',
+        uom: cleanUom,
         safety_stock: Number(safetyStock),
         reorder_quantity: Number(reorderQuantity),
       };
 
       await productService.createProduct(payload);
+      toast.success(`Product ${payload.name} (${payload.sku}) added to catalog!`);
       onSuccess();
       onClose();
       // Reset form
