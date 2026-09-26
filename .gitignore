@@ -1,11 +1,11 @@
-# Python
+# Python / Virtualenv
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-backend/.venv/
 .venv/
+backend/.venv/
 env/
 venv/
 ENV/
@@ -20,18 +20,29 @@ ENV/
 .coverage
 htmlcov/
 
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+dist-ssr/
+frontend/dist-ssr/
+.npm
+
 # Environment variables
 .env
 .env.local
+*.local
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
+.DS_Store
 
-# Node / Frontend
-node_modules/
-dist/
-build/
-.npm
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
