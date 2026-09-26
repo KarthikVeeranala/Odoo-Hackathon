@@ -116,7 +116,7 @@ async function runExtendedPhase2DomTest() {
     console.log('\n5. Navigating to Visual Warehouse map...');
     await page.click('a[href="/warehouse"]');
     await page.waitForFunction(() => window.location.pathname === '/warehouse');
-    await page.waitForSelector('div[class*="grid"] div[class*="rounded-xl"]');
+    await page.waitForSelector('div[class*="grid"] > div[class*="cursor-pointer"]', { timeout: 10000 });
 
     const locationCards = await page.$$('div[class*="grid"] > div[class*="cursor-pointer"]');
     console.log(`✅ Rendered ${locationCards.length} warehouse location cards in 2D grid`);
