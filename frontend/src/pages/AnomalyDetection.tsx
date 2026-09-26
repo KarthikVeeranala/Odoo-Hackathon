@@ -14,8 +14,10 @@ import {
 import { intelligenceService } from '../services/intelligence';
 import { AnomalyRecord, AnomalySeverity, AnomalyStatus } from '../types/intelligence';
 import AnomalyCard from '../components/intelligence/AnomalyCard';
+import { useToast } from '../context/ToastContext';
 
 export const AnomalyDetection: React.FC = () => {
+  const toast = useToast();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState<'ALL' | 'CRITICAL' | 'WARNING' | 'OPEN' | 'RESOLVED'>('ALL');
@@ -33,8 +35,10 @@ export const AnomalyDetection: React.FC = () => {
   const statusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string | number; status: AnomalyStatus }) => {
       await intelligenceService.updateAnomalyStatus(id, status);
+      return { id, status };
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      toast.info(`Variance audit record updated to ${data.status}.`);
       queryClient.invalidateQueries({ queryKey: ['anomalies'] });
     },
   });

@@ -5,6 +5,8 @@ import operationService from '../../services/operations';
 import StatusBadge from '../common/StatusBadge';
 import Button from '../common/Button';
 
+import { useToast } from '../../context/ToastContext';
+
 interface OperationDetailModalProps {
   operation: Operation | null;
   onClose: () => void;
@@ -16,6 +18,7 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
   onClose,
   onUpdate,
 }) => {
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [detail, setDetail] = useState<Operation | null>(operation);
@@ -40,11 +43,13 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
     setError(null);
     try {
       await operationService.validateOperation(detail.id);
+      toast.success(`${detail.type} ${detail.operation_number} successfully validated & stock updated!`);
       onUpdate();
       onClose();
     } catch (err: any) {
       const msg = err.response?.data?.error?.message || err.message || 'Failed to validate operation';
       setError(msg);
+      toast.error(msg, 'Validation Failed');
     } finally {
       setIsLoading(false);
     }
@@ -55,11 +60,13 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
     setError(null);
     try {
       await operationService.cancelOperation(detail.id);
+      toast.warning(`Operation ${detail.operation_number} was cancelled.`);
       onUpdate();
       onClose();
     } catch (err: any) {
       const msg = err.response?.data?.error?.message || err.message || 'Failed to cancel operation';
       setError(msg);
+      toast.error(msg, 'Cancellation Failed');
     } finally {
       setIsLoading(false);
     }

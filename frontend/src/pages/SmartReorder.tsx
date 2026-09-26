@@ -17,8 +17,10 @@ import {
 import { intelligenceService } from '../services/intelligence';
 import { ReorderRecommendation, ReorderUrgency } from '../types/intelligence';
 import UrgencyBadge from '../components/intelligence/UrgencyBadge';
+import { useToast } from '../context/ToastContext';
 
 export const SmartReorder: React.FC = () => {
+  const toast = useToast();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [urgencyFilter, setUrgencyFilter] = useState<'ALL' | ReorderUrgency>('ALL');
@@ -57,6 +59,7 @@ export const SmartReorder: React.FC = () => {
         reference: ref,
         productName: data.productName,
       });
+      toast.success(`Draft replenishment receipt ${ref} generated for ${data.productName}!`);
       queryClient.invalidateQueries({ queryKey: ['operations'] });
       queryClient.invalidateQueries({ queryKey: ['reorder-recommendations'] });
       queryClient.invalidateQueries({ queryKey: ['kpis'] });

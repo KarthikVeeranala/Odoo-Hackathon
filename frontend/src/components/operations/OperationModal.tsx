@@ -7,6 +7,7 @@ import operationService from '../../services/operations';
 import LineItemEditor, { LineItem } from './LineItemEditor';
 import Input from '../common/Input';
 import Button from '../common/Button';
+import { useToast } from '../../context/ToastContext';
 
 interface OperationModalProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ export const OperationModal: React.FC<OperationModalProps> = ({
   products,
   locations,
 }) => {
+  const toast = useToast();
   const [partnerName, setPartnerName] = useState('');
   const [sourceLocationId, setSourceLocationId] = useState<number | ''>('');
   const [destinationLocationId, setDestinationLocationId] = useState<number | ''>('');
@@ -162,12 +164,15 @@ export const OperationModal: React.FC<OperationModalProps> = ({
             : lines.map((l) => ({ product_id: l.product_id, quantity: Number(l.quantity) })),
       };
 
-      await operationService.createOperation(payload);
+      const created = await operationService.createOperation(payload);
+      toast.success(`New ${type} ${created.reference || created.operation_number} successfully registered!`);
       onSuccess();
       onClose();
     } catch (err: any) {
       console.error('Failed to create operation:', err);
-      setError(err.message || 'Operation creation failed. Please check field inputs.');
+      const msg = err.message || 'Operation creation failed. Please check field inputs.';
+      setError(msg);
+      toast.error(msg, 'Creation Failed');
     } finally {
       setIsLoading(false);
     }
