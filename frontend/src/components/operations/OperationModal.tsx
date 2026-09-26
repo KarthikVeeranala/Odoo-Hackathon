@@ -145,15 +145,20 @@ export const OperationModal: React.FC<OperationModalProps> = ({
     setIsLoading(true);
 
     try {
+      const targetLocId = Number(sourceLocationId || destinationLocationId || (locations[0]?.id));
+      const targetLoc = locations.find((l) => l.id === targetLocId);
+      const whId = targetLoc?.warehouse_id || (locations[0]?.warehouse_id) || 1;
+
       const payload: OperationCreatePayload = {
         type,
+        warehouse_id: whId,
         partner_name: partnerName.trim() || undefined,
         source_location_id: sourceLocationId ? Number(sourceLocationId) : null,
         destination_location_id: destinationLocationId ? Number(destinationLocationId) : null,
         notes: notes.trim() || undefined,
         lines:
           type === 'ADJUSTMENT'
-            ? [{ product_id: adjustmentProductId, quantity: countedQuantity }]
+            ? [{ product_id: adjustmentProductId, quantity: Math.max(1, countedQuantity) }]
             : lines.map((l) => ({ product_id: l.product_id, quantity: Number(l.quantity) })),
       };
 

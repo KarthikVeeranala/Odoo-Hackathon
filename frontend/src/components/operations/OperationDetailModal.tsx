@@ -18,18 +18,33 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [detail, setDetail] = useState<Operation | null>(operation);
 
-  if (!operation) return null;
+  React.useEffect(() => {
+    if (operation) {
+      setDetail(operation);
+      operationService.getOperationById(operation.id).then((full) => {
+        setDetail(full);
+      }).catch((err) => {
+        console.warn('Could not fetch full operation detail:', err);
+      });
+    } else {
+      setDetail(null);
+    }
+  }, [operation]);
+
+  if (!operation || !detail) return null;
 
   const handleValidate = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      await operationService.validateOperation(operation.id);
+      await operationService.validateOperation(detail.id);
       onUpdate();
       onClose();
     } catch (err: any) {
-      setError(err.message || 'Failed to validate operation');
+      const msg = err.response?.data?.error?.message || err.message || 'Failed to validate operation';
+      setError(msg);
     } finally {
       setIsLoading(false);
     }
@@ -39,17 +54,18 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
     setIsLoading(true);
     setError(null);
     try {
-      await operationService.cancelOperation(operation.id);
+      await operationService.cancelOperation(detail.id);
       onUpdate();
       onClose();
     } catch (err: any) {
-      setError(err.message || 'Failed to cancel operation');
+      const msg = err.response?.data?.error?.message || err.message || 'Failed to cancel operation';
+      setError(msg);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const canAction = operation.status !== 'DONE' && operation.status !== 'CANCELLED';
+  const canAction = detail.status !== 'DONE' && detail.status !== 'CANCELLED' && detail.status !== 'CANCELED';
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
@@ -58,12 +74,12 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
           <div className="flex items-center gap-3">
             <span className="font-mono text-sm font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-lg">
-              {operation.operation_number}
+              {detail.reference || detail.operation_number}
             </span>
             <span className="text-xs font-semibold px-2 py-0.5 rounded uppercase tracking-wider bg-slate-100 text-slate-700">
-              {operation.type}
+              {detail.type}
             </span>
-            <StatusBadge status={operation.status} />
+            <StatusBadge status={detail.status} />
           </div>
 
           <button
@@ -84,15 +100,15 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
 
           {/* Metadata Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {operation.partner_name && (
+            {detail.partner_name && (
               <div className="p-3 rounded-xl border border-slate-200 bg-slate-50/50 flex items-start gap-3">
                 <User className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
                 <div>
                   <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
-                    {operation.type === 'RECEIPT' ? 'Supplier' : 'Customer'}
+                    {detail.type === 'RECEIPT' ? 'Supplier' : 'Customer'}
                   </span>
                   <span className="text-sm font-semibold text-slate-800">
-                    {operation.partner_name}
+                    {detail.partner_name}
                   </span>
                 </div>
               </div>
@@ -105,12 +121,12 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
                   Created At
                 </span>
                 <span className="text-sm font-semibold text-slate-800">
-                  {new Date(operation.created_at).toLocaleString()}
+                  {new Date(detail.created_at).toLocaleString()}
                 </span>
               </div>
             </div>
 
-            {operation.source_location_name && (
+            {(detail.source_location_name || detail.source_location_id) && (
               <div className="p-3 rounded-xl border border-slate-200 bg-slate-50/50 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
                 <div>
@@ -118,13 +134,13 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
                     Source Location
                   </span>
                   <span className="text-sm font-semibold text-slate-800">
-                    {operation.source_location_name}
+                    {detail.source_location_name || `Location #${detail.source_location_id}`}
                   </span>
                 </div>
               </div>
             )}
 
-            {operation.destination_location_name && (
+            {(detail.destination_location_name || detail.dest_location_name || detail.destination_location_id || detail.dest_location_id) && (
               <div className="p-3 rounded-xl border border-slate-200 bg-slate-50/50 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
                 <div>
@@ -132,21 +148,21 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
                     Destination Location
                   </span>
                   <span className="text-sm font-semibold text-slate-800">
-                    {operation.destination_location_name}
+                    {detail.destination_location_name || detail.dest_location_name || `Location #${detail.destination_location_id || detail.dest_location_id}`}
                   </span>
                 </div>
               </div>
             )}
           </div>
 
-          {operation.notes && (
+          {detail.notes && (
             <div className="p-3 rounded-xl border border-slate-200 bg-slate-50/50 flex items-start gap-3">
               <FileText className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
               <div>
                 <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
                   Reference Notes
                 </span>
-                <p className="text-xs text-slate-700 mt-0.5">{operation.notes}</p>
+                <p className="text-xs text-slate-700 mt-0.5">{detail.notes}</p>
               </div>
             </div>
           )}
@@ -154,7 +170,7 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
           {/* Line Items Table */}
           <div>
             <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2.5">
-              Operation Items ({operation.lines.length})
+              Operation Items ({detail.lines.length})
             </h4>
             <div className="border border-slate-200 rounded-xl overflow-hidden">
               <table className="w-full text-left text-xs">
@@ -162,7 +178,7 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
                   <tr>
                     <th className="py-2.5 px-4">Item Details</th>
                     <th className="py-2.5 px-4 text-right">Quantity</th>
-                    {operation.type === 'ADJUSTMENT' && (
+                    {detail.type === 'ADJUSTMENT' && (
                       <>
                         <th className="py-2.5 px-4 text-right">System Qty</th>
                         <th className="py-2.5 px-4 text-right">Variance</th>
@@ -171,7 +187,7 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {operation.lines.map((line, idx) => (
+                  {detail.lines.map((line, idx) => (
                     <tr key={idx} className="hover:bg-slate-50/60">
                       <td className="py-3 px-4">
                         <span className="font-semibold text-slate-800 block">
@@ -186,7 +202,7 @@ export const OperationDetailModal: React.FC<OperationDetailModalProps> = ({
                       <td className="py-3 px-4 text-right font-bold text-slate-900">
                         {line.quantity} <span className="text-slate-400 font-normal">{line.uom || 'units'}</span>
                       </td>
-                      {operation.type === 'ADJUSTMENT' && (
+                      {detail.type === 'ADJUSTMENT' && (
                         <>
                           <td className="py-3 px-4 text-right text-slate-500">
                             {line.system_quantity ?? 0} {line.uom || 'units'}
