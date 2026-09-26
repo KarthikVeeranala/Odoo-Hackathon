@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.config import CORS_ORIGINS
 from app.database import init_db
-from app.routers import auth, products, warehouses, operations
+from app.routers import auth, products, warehouses, operations, ledger, dashboard
 
 
 @asynccontextmanager
@@ -87,6 +87,8 @@ app.include_router(auth.router, prefix="/api")
 app.include_router(products.router, prefix="/api")
 app.include_router(warehouses.router, prefix="/api")
 app.include_router(operations.router, prefix="/api")
+app.include_router(ledger.router, prefix="/api")
+app.include_router(dashboard.router, prefix="/api")
 
 
 @app.get("/api/health", tags=["Health"])
