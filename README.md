@@ -162,16 +162,6 @@ Open `http://localhost:3000/` and click **"1-Click Admin Login"**.
 * 🌐 **Online Stream**: [Watch on Google Drive](https://drive.google.com/file/d/1aqPKAQ6Ec6oFYYL2_MqHppOGoIc7fgT-/view?usp=drive_link)
 * 💾 **Local 1080p Recording**: [`stocksense_demo_walkthrough.mp4`](stocksense_demo_walkthrough.mp4) (Complete 4-minute 12-scene walkthrough)
 
----
-
-## 🌐 Production Deployment (Option A Architecture)
-
-* **Frontend (Vercel)**:
-  * Deploy `frontend/` as a static build with client-side SPA rewrites configured in `frontend/vercel.json`.
-  * Set `VITE_API_URL=https://stocksense-api.onrender.com/api`.
-* **Backend (Render.com / Railway)**:
-  * 1-click blueprint provided in `render.yaml` and `backend/Dockerfile`.
-  * Uses persistent disk for SQLite WAL database, pre-seeded on build.
 
 ---
 
