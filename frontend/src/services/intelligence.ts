@@ -241,6 +241,32 @@ export const intelligenceService = {
       ],
     });
   },
+
+  /**
+   * Queries the StockSense AI Copilot assistant for real-time live inventory insights.
+   */
+  async queryCopilot(query: string) {
+    const res = await apiClient.post('/intelligence/copilot/query', { query });
+    return res.data?.data || res.data;
+  },
+
+  /**
+   * Retrieves quick suggested starter prompt chips for the AI Copilot.
+   */
+  async getCopilotSuggestedPrompts(): Promise<string[]> {
+    try {
+      const res = await apiClient.get('/intelligence/copilot/suggested-prompts');
+      return res.data?.data || res.data;
+    } catch {
+      return [
+        "Which products are critically low in stock?",
+        "How much Cold Rolled Steel Rod is available across racks?",
+        "What inbound receipts and outbound deliveries are pending?",
+        "What inventory anomalies or audit variances were detected?",
+        "Provide a high-level inventory and warehouse summary.",
+      ];
+    }
+  },
 };
 
 export default intelligenceService;

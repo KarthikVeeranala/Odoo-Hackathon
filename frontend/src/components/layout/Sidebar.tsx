@@ -12,6 +12,7 @@ import {
   Sparkles,
   AlertTriangle,
   Boxes,
+  Bot,
 } from 'lucide-react';
 
 interface NavItem {
@@ -37,6 +38,7 @@ export const Sidebar: React.FC = () => {
     { label: 'Visual Warehouse', to: '/warehouse', icon: <Warehouse className="w-4 h-4" />, badge: '2D Map' },
     { label: 'Smart Reorder', to: '/reorder', icon: <Sparkles className="w-4 h-4 text-indigo-500" />, badge: 'Smart' },
     { label: 'Anomaly Review', to: '/anomalies', icon: <AlertTriangle className="w-4 h-4 text-amber-500" />, badge: 'Alerts' },
+    { label: 'AI Copilot', to: '/copilot', icon: <Bot className="w-4 h-4 text-indigo-400" />, badge: 'AI' },
   ];
 
   return (

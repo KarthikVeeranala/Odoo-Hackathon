@@ -23,6 +23,7 @@ import StockLedger from './pages/StockLedger';
 import Warehouse from './pages/Warehouse';
 import SmartReorder from './pages/SmartReorder';
 import AnomalyDetection from './pages/AnomalyDetection';
+import Copilot from './pages/Copilot';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +67,7 @@ export const App: React.FC = () => {
                   <Route path="warehouse" element={<Warehouse />} />
                   <Route path="reorder" element={<SmartReorder />} />
                   <Route path="anomalies" element={<AnomalyDetection />} />
+                  <Route path="copilot" element={<Copilot />} />
                 </Route>
 
                 {/* Catch-all */}

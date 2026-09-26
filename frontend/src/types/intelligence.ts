@@ -55,3 +55,23 @@ export interface AnomalyFilterParams {
   status?: 'ALL' | AnomalyStatus;
   search?: string;
 }
+
+export interface CopilotDataCard {
+  title: string;
+  metric: string;
+  tag?: string;
+  urgency?: string;
+  detail?: string;
+  explanation?: string;
+}
+
+export interface CopilotQueryResponse {
+  query: string;
+  intent: string;
+  summary: string;
+  data_cards?: CopilotDataCard[];
+  action_link?: string;
+  action_label?: string;
+  suggested_prompts: string[];
+}
+

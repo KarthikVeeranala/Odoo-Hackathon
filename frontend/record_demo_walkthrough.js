@@ -67,20 +67,20 @@ async function main() {
     // -------------------------------------------------------------
     // SCENE 1: AUTHENTICATION
     // -------------------------------------------------------------
-    console.log('\n[Scene 1] Navigating to Login Page...');
+    // -------------------------------------------------------------
+    // SCENE 1: AUTHENTICATION (1-CLICK EVALUATOR LOGIN)
+    // -------------------------------------------------------------
+    console.log('\n[Scene 1] Navigating to Login Page with Evaluator Banner...');
     await page.goto('http://127.0.0.1:3000/login', { waitUntil: 'networkidle0' });
-    await sleep(1500);
+    await sleep(2000);
 
-    const inputs = await page.$$('input');
-    if (inputs.length >= 2) {
-      await inputs[0].click({ clickCount: 3 });
-      await inputs[0].type('admin@stocksense.com', { delay: 40 });
-      await sleep(400);
-      await inputs[1].click({ clickCount: 3 });
-      await inputs[1].type('Password@123', { delay: 40 });
-      await sleep(800);
+    // Click 1-Click Demo Login button
+    const demoBtn = await page.$('button[type="button"]');
+    if (demoBtn) {
+      await demoBtn.click();
+    } else {
+      await page.click('button[type="submit"]');
     }
-    await page.click('button[type="submit"]');
     await page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 }).catch(() => {});
     await sleep(2000);
 
@@ -190,6 +190,33 @@ async function main() {
       window.scrollBy({ top: -350, behavior: 'smooth' });
     });
     await sleep(2000);
+
+    // -------------------------------------------------------------
+    // SCENE 9: AI INVENTORY COPILOT
+    // -------------------------------------------------------------
+    console.log('[Scene 9] StockSense AI Inventory Copilot Showcase...');
+    await page.goto('http://127.0.0.1:3000/copilot', { waitUntil: 'networkidle0' });
+    await sleep(2500);
+
+    // Click starter prompt chip
+    const chipBtns = await page.$$('button');
+    for (const b of chipBtns) {
+      const text = await (await b.getProperty('innerText')).jsonValue();
+      if (text && text.includes('critically low')) {
+        await b.click();
+        break;
+      }
+    }
+    await sleep(3500);
+
+    // Type a second query
+    const chatInput = await page.$('input[placeholder*="Ask a question"]');
+    if (chatInput) {
+      await chatInput.type('How much Cold Rolled Steel is available?', { delay: 45 });
+      await sleep(500);
+      await page.keyboard.press('Enter');
+      await sleep(3500);
+    }
 
     console.log('\n✅ All demo walkthrough scenes captured successfully!');
   } finally {

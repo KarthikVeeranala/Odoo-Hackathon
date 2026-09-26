@@ -1,7 +1,7 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LogOut, User as UserIcon, Building2, Bell } from 'lucide-react';
+import { LogOut, User as UserIcon, Building2, Bell, Sparkles } from 'lucide-react';
 import Button from '../common/Button';
 
 interface HeaderProps {
@@ -34,6 +34,8 @@ export const Header: React.FC<HeaderProps> = () => {
         return { title: 'Smart Reorder Intelligence', subtitle: 'Explainable replenishment recommendations' };
       case '/anomalies':
         return { title: 'Inventory Anomaly Detection', subtitle: 'Operational Variances Requiring Review' };
+      case '/copilot':
+        return { title: 'AI Inventory Copilot', subtitle: 'Live warehouse intelligence assistant backed by SQLite' };
       default:
         return { title: 'StockSense', subtitle: 'Inventory Management System' };
     }
@@ -49,6 +51,15 @@ export const Header: React.FC<HeaderProps> = () => {
       </div>
 
       <div className="flex items-center gap-3">
+        {/* AI Copilot Quick Button */}
+        <Link
+          to="/copilot"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-indigo-50 to-indigo-100/70 hover:from-indigo-100 hover:to-indigo-200/70 border border-indigo-200/80 rounded-lg text-xs font-semibold text-indigo-700 shadow-2xs transition-all"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+          <span>AI Copilot</span>
+        </Link>
+
         {/* Warehouse Indicator */}
         <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 rounded-md text-xs font-medium text-slate-700 border border-slate-200">
           <Building2 className="w-3.5 h-3.5 text-slate-500" />

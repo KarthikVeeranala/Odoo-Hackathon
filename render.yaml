@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: stocksense-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python -m app.seeds.seed_data
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: STOCKSENSE_DB_PATH
+        value: stocksense.db
