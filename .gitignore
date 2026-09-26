@@ -48,3 +48,8 @@ frontend/dist-ssr/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Video Recordings
+*.mp4
+temp_screencast_frames/
+
