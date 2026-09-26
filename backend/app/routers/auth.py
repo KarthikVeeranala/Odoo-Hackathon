@@ -174,14 +174,17 @@ def reset_password(req: ResetPasswordRequest):
 @router.get("/me", status_code=status.HTTP_200_OK)
 def get_me(current_user: dict = Depends(get_current_user)):
     """Returns profile for currently authenticated user."""
+    user_payload = {
+        "id": current_user["id"],
+        "name": current_user["name"],
+        "email": current_user["email"],
+        "role": current_user["role"],
+    }
     return {
         "success": True,
         "data": {
-            "user": {
-                "id": current_user["id"],
-                "name": current_user["name"],
-                "email": current_user["email"],
-                "role": current_user["role"]
-            }
+            **user_payload,
+            "user": user_payload
         }
     }
+
