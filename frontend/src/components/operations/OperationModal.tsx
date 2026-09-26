@@ -42,6 +42,17 @@ export const OperationModal: React.FC<OperationModalProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    if (products.length > 0) {
+      if (lines.length === 0) {
+        setLines([{ product_id: products[0].id, quantity: 1 }]);
+      }
+      if (!adjustmentProductId) {
+        setAdjustmentProductId(products[0].id);
+      }
+    }
+  }, [products, isOpen]);
+
   if (!isOpen) return null;
 
   const getTitleAndIcon = () => {
