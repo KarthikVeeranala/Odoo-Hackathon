@@ -45,6 +45,16 @@ export const Warehouse: React.FC = () => {
     enabled: !!inspectLocationId,
   });
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && inspectLocationId) {
+        setInspectLocationId(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [inspectLocationId]);
+
   // Aggregate metrics
   const totalLocations = filteredLocations.length;
   const avgUtilization =

@@ -259,6 +259,7 @@ async function runPhase6DomTests() {
     });
     if (drafted) {
       await page.waitForFunction(() => document.body.innerText.toLowerCase().includes('draft') || document.body.innerText.toLowerCase().includes('replenishment'), { timeout: 6000 });
+      await new Promise((r) => setTimeout(r, 1200));
       console.log('✅ PASS: 1-click Draft PO inward receipt created with toast notification');
     }
     await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'p6_10_smart_reorder_forecasting.png') });
