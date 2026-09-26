@@ -12,7 +12,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function main() {
   console.log('===============================================================');
-  console.log('🎬 STARTING AUTOMATED STOCKSENSE HIGH-DEF DEMO VIDEO RECORDER');
+  console.log('🎬 STARTING COMPLETE FULL-APPLICATION DEMO WALKTHROUGH RECORDER');
   console.log('===============================================================');
 
   if (fs.existsSync(FRAMES_DIR)) {
@@ -55,7 +55,7 @@ async function main() {
     }
   });
 
-  // Start Screencast at 24fps HD quality
+  // Start Screencast at 18fps HD quality
   await client.send('Page.startScreencast', {
     format: 'jpeg',
     quality: 90,
@@ -65,10 +65,7 @@ async function main() {
 
   try {
     // -------------------------------------------------------------
-    // SCENE 1: AUTHENTICATION
-    // -------------------------------------------------------------
-    // -------------------------------------------------------------
-    // SCENE 1: AUTHENTICATION (1-CLICK EVALUATOR LOGIN)
+    // SCENE 1: AUTHENTICATION & 1-CLICK DEMO LOGIN
     // -------------------------------------------------------------
     console.log('\n[Scene 1] Navigating to Login Page with Evaluator Banner...');
     await page.goto('http://127.0.0.1:3000/login', { waitUntil: 'networkidle0' });
@@ -82,91 +79,46 @@ async function main() {
       await page.click('button[type="submit"]');
     }
     await page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 10000 }).catch(() => {});
-    await sleep(2000);
+    await sleep(2500);
 
     // -------------------------------------------------------------
     // SCENE 2: EXECUTIVE LOGISTICS DASHBOARD
     // -------------------------------------------------------------
-    console.log('[Scene 2] Executive Logistics Dashboard Showcase...');
-    await page.goto('http://127.0.0.1:3000/', { waitUntil: 'networkidle0' });
-    await sleep(1500);
+    console.log('[Scene 2] Executive Dashboard & 5 Live KPIs...');
+    await page.waitForSelector('main', { timeout: 8000 }).catch(() => {});
+    await sleep(2000);
     // Smooth scroll down to view metrics & activities
     await page.evaluate(async () => {
-      window.scrollBy({ top: 350, behavior: 'smooth' });
+      window.scrollBy({ top: 380, behavior: 'smooth' });
     });
-    await sleep(2000);
+    await sleep(2500);
     await page.evaluate(async () => {
-      window.scrollBy({ top: -350, behavior: 'smooth' });
+      window.scrollBy({ top: -380, behavior: 'smooth' });
     });
     await sleep(1500);
 
     // -------------------------------------------------------------
     // SCENE 3: INDUSTRIAL PRODUCT CATALOG
     // -------------------------------------------------------------
-    console.log('[Scene 3] Product Catalog & Stock Status...');
-    await page.goto('http://127.0.0.1:3000/products', { waitUntil: 'networkidle0' });
-    await sleep(2000);
-    // Search for a product
+    console.log('[Scene 3] Products Catalog Navigation & Search...');
+    await page.click('a[href="/products"]');
+    await sleep(2500);
+
     const searchInput = await page.$('input[placeholder*="Search"]');
     if (searchInput) {
-      await searchInput.type('Bolt', { delay: 60 });
-      await sleep(1500);
+      await searchInput.type('Motor', { delay: 70 });
+      await sleep(2000);
       await searchInput.click({ clickCount: 3 });
       await page.keyboard.press('Backspace');
       await sleep(1500);
     }
 
     // -------------------------------------------------------------
-    // SCENE 4: 2D VISUAL WAREHOUSE & LOCATION RACKS
+    // SCENE 4: INBOUND RECEIPTS
     // -------------------------------------------------------------
-    console.log('[Scene 4] Multi-Warehouse Visual Hierarchy & Rack Inspection...');
-    await page.goto('http://127.0.0.1:3000/warehouses', { waitUntil: 'networkidle0' });
+    console.log('[Scene 4] Inbound Receipts Management (/receipts)...');
+    await page.click('a[href="/receipts"]');
     await sleep(2500);
-    await page.evaluate(async () => {
-      window.scrollBy({ top: 300, behavior: 'smooth' });
-    });
-    await sleep(2000);
-    await page.evaluate(async () => {
-      window.scrollBy({ top: -300, behavior: 'smooth' });
-    });
-    await sleep(1000);
-
-    // -------------------------------------------------------------
-    // SCENE 5: OPERATIONS & MOVEMENTS (RECEIPTS, TRANSFERS, DELIVERIES)
-    // -------------------------------------------------------------
-    console.log('[Scene 5] Inventory Operations Management...');
-    await page.goto('http://127.0.0.1:3000/operations', { waitUntil: 'networkidle0' });
-    await sleep(2500);
-    await page.evaluate(async () => {
-      window.scrollBy({ top: 350, behavior: 'smooth' });
-    });
-    await sleep(2000);
-    await page.evaluate(async () => {
-      window.scrollBy({ top: -350, behavior: 'smooth' });
-    });
-    await sleep(1000);
-
-    // -------------------------------------------------------------
-    // SCENE 6: IMMUTABLE STOCK LEDGER AUDIT TRAIL
-    // -------------------------------------------------------------
-    console.log('[Scene 6] Immutable Stock Movement Ledger...');
-    await page.goto('http://127.0.0.1:3000/ledger', { waitUntil: 'networkidle0' });
-    await sleep(2500);
-    await page.evaluate(async () => {
-      window.scrollBy({ top: 400, behavior: 'smooth' });
-    });
-    await sleep(2000);
-    await page.evaluate(async () => {
-      window.scrollBy({ top: -400, behavior: 'smooth' });
-    });
-    await sleep(1000);
-
-    // -------------------------------------------------------------
-    // SCENE 7: SMART REORDER INTELLIGENCE (DUS RUNWAY & REORDER)
-    // -------------------------------------------------------------
-    console.log('[Scene 7] Smart Reorder Intelligence & Consumption Forecasting...');
-    await page.goto('http://127.0.0.1:3000/reorder', { waitUntil: 'networkidle0' });
-    await sleep(3000);
     await page.evaluate(async () => {
       window.scrollBy({ top: 300, behavior: 'smooth' });
     });
@@ -177,10 +129,121 @@ async function main() {
     await sleep(1500);
 
     // -------------------------------------------------------------
-    // SCENE 8: ANOMALY DETECTION ENGINE
+    // SCENE 5: OUTBOUND DELIVERIES
     // -------------------------------------------------------------
-    console.log('[Scene 8] Real-Time Anomaly Detection & Discrepancy Diagnostics...');
-    await page.goto('http://127.0.0.1:3000/anomalies', { waitUntil: 'networkidle0' });
+    console.log('[Scene 5] Outbound Deliveries Management (/deliveries)...');
+    await page.click('a[href="/deliveries"]');
+    await sleep(2500);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: 300, behavior: 'smooth' });
+    });
+    await sleep(2000);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: -300, behavior: 'smooth' });
+    });
+    await sleep(1500);
+
+    // -------------------------------------------------------------
+    // SCENE 6: INTERNAL TRANSFERS
+    // -------------------------------------------------------------
+    console.log('[Scene 6] Internal Put-Away Transfers (/transfers)...');
+    await page.click('a[href="/transfers"]');
+    await sleep(2500);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: 300, behavior: 'smooth' });
+    });
+    await sleep(2000);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: -300, behavior: 'smooth' });
+    });
+    await sleep(1500);
+
+    // -------------------------------------------------------------
+    // SCENE 7: STOCK ADJUSTMENTS & PHYSICAL AUDITS
+    // -------------------------------------------------------------
+    console.log('[Scene 7] Stock Adjustments & Physical Audits (/adjustments)...');
+    await page.click('a[href="/adjustments"]');
+    await sleep(2500);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: 300, behavior: 'smooth' });
+    });
+    await sleep(2000);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: -300, behavior: 'smooth' });
+    });
+    await sleep(1500);
+
+    // -------------------------------------------------------------
+    // SCENE 8: 2D VISUAL WAREHOUSE & RACKS
+    // -------------------------------------------------------------
+    console.log('[Scene 8] 2D Visual Warehouse Map & Shelf Inspection (/warehouse)...');
+    await page.click('a[href="/warehouse"]');
+    await sleep(3000);
+
+    // Click on a rack card/button to inspect its contents
+    const rackEl = await page.$('.cursor-pointer, [role="button"]');
+    if (rackEl) {
+      await rackEl.click();
+      await sleep(2500);
+      // Close drawer/modal if opened
+      await page.keyboard.press('Escape');
+      await sleep(1000);
+    }
+    await page.evaluate(async () => {
+      window.scrollBy({ top: 300, behavior: 'smooth' });
+    });
+    await sleep(2000);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: -300, behavior: 'smooth' });
+    });
+    await sleep(1500);
+
+    // -------------------------------------------------------------
+    // SCENE 9: IMMUTABLE STOCK LEDGER AUDIT TRAIL
+    // -------------------------------------------------------------
+    console.log('[Scene 9] Double-Entry Immutable Stock Ledger (/ledger)...');
+    await page.click('a[href="/ledger"]');
+    await sleep(3000);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: 400, behavior: 'smooth' });
+    });
+    await sleep(2500);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: -400, behavior: 'smooth' });
+    });
+    await sleep(1500);
+
+    // -------------------------------------------------------------
+    // SCENE 10: SMART REORDER INTELLIGENCE (DUS RUNWAY)
+    // -------------------------------------------------------------
+    console.log('[Scene 10] Smart Reorder Intelligence & DUS Forecasts (/reorder)...');
+    await page.click('a[href="/reorder"]');
+    await sleep(3000);
+
+    // Click a Restock button on a critical item
+    const restockButtons = await page.$$('button');
+    for (const btn of restockButtons) {
+      const text = await (await btn.getProperty('innerText')).jsonValue().catch(() => '');
+      if (text && (text.includes('Restock') || text.includes('Create') || text.includes('Draft'))) {
+        await btn.click().catch(() => {});
+        await sleep(2000);
+        break;
+      }
+    }
+    await page.evaluate(async () => {
+      window.scrollBy({ top: 350, behavior: 'smooth' });
+    });
+    await sleep(2000);
+    await page.evaluate(async () => {
+      window.scrollBy({ top: -350, behavior: 'smooth' });
+    });
+    await sleep(1500);
+
+    // -------------------------------------------------------------
+    // SCENE 11: OPERATIONAL ANOMALY DETECTION
+    // -------------------------------------------------------------
+    console.log('[Scene 11] Deterministic Anomaly Detection Engine (/anomalies)...');
+    await page.click('a[href="/anomalies"]');
     await sleep(3000);
     await page.evaluate(async () => {
       window.scrollBy({ top: 350, behavior: 'smooth' });
@@ -189,14 +252,14 @@ async function main() {
     await page.evaluate(async () => {
       window.scrollBy({ top: -350, behavior: 'smooth' });
     });
-    await sleep(2000);
+    await sleep(1500);
 
     // -------------------------------------------------------------
-    // SCENE 9: AI INVENTORY COPILOT
+    // SCENE 12: AI INVENTORY COPILOT
     // -------------------------------------------------------------
-    console.log('[Scene 9] StockSense AI Inventory Copilot Showcase...');
-    await page.goto('http://127.0.0.1:3000/copilot', { waitUntil: 'networkidle0' });
-    await sleep(2500);
+    console.log('[Scene 12] StockSense AI Inventory Copilot (/copilot)...');
+    await page.click('a[href="/copilot"]');
+    await sleep(3000);
 
     // Click starter prompt chip
     const chipBtns = await page.$$('button');
@@ -215,10 +278,10 @@ async function main() {
       await chatInput.type('How much Cold Rolled Steel is available?', { delay: 45 });
       await sleep(500);
       await page.keyboard.press('Enter');
-      await sleep(3500);
+      await sleep(4000);
     }
 
-    console.log('\n✅ All demo walkthrough scenes captured successfully!');
+    console.log('\n✅ All 12 demo walkthrough scenes captured successfully!');
   } finally {
     isRecording = false;
     await client.send('Page.stopScreencast').catch(() => {});
@@ -267,7 +330,7 @@ async function main() {
   const stats = fs.statSync(OUTPUT_VIDEO);
   const sizeMb = (stats.size / (1024 * 1024)).toFixed(2);
   console.log('===============================================================');
-  console.log(`🎉 SUCCESS! Demo Walkthrough Video Created:`);
+  console.log(`🎉 SUCCESS! Complete Demo Walkthrough Video Created:`);
   console.log(`📁 File: ${OUTPUT_VIDEO}`);
   console.log(`📦 Size: ${sizeMb} MB`);
   console.log('===============================================================');

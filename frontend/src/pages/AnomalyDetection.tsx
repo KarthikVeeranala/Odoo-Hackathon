@@ -58,13 +58,13 @@ export const AnomalyDetection: React.FC = () => {
 
   // Filtering
   const filteredAnomalies = useMemo(() => {
+    const q = (search || '').toLowerCase();
     return anomalies.filter((item) => {
-      const q = search.toLowerCase();
       const matchesSearch =
-        item.product_name.toLowerCase().includes(q) ||
-        item.product_sku.toLowerCase().includes(q) ||
-        item.location_name.toLowerCase().includes(q) ||
-        item.anomaly_type.toLowerCase().includes(q);
+        (item.product_name || '').toLowerCase().includes(q) ||
+        (item.product_sku || '').toLowerCase().includes(q) ||
+        (item.location_name || '').toLowerCase().includes(q) ||
+        (item.anomaly_type || '').toLowerCase().includes(q);
 
       let matchesFilter = true;
       if (filterType === 'CRITICAL') matchesFilter = item.severity === 'CRITICAL';

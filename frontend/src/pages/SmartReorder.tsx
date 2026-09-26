@@ -77,11 +77,12 @@ export const SmartReorder: React.FC = () => {
 
   // Filtering
   const filteredItems = useMemo(() => {
+    const searchLower = (search || '').toLowerCase();
     return recommendations.filter((item) => {
       const matchesSearch =
-        item.product_name.toLowerCase().includes(search.toLowerCase()) ||
-        item.product_sku.toLowerCase().includes(search.toLowerCase()) ||
-        (item.category_name && item.category_name.toLowerCase().includes(search.toLowerCase()));
+        (item.product_name || '').toLowerCase().includes(searchLower) ||
+        (item.product_sku || '').toLowerCase().includes(searchLower) ||
+        (item.category_name || '').toLowerCase().includes(searchLower);
 
       const matchesUrgency = urgencyFilter === 'ALL' || item.urgency === urgencyFilter;
 
