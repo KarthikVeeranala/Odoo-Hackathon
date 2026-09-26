@@ -20,7 +20,7 @@ StockSense is a production-grade, real-time **Inventory Management System (IMS) 
 
 | Resource | Link / Path | Description |
 | :--- | :--- | :--- |
-| 🚀 **Live Web Application** | [stocksense-ims.vercel.app](https://stocksense-ims.vercel.app) | Deployed on Vercel CDN |
+| 🚀 **Live Web Application** | [odoo-hackathon-frontend-gilt.vercel.app](https://odoo-hackathon-frontend-gilt.vercel.app/) | Deployed on Vercel CDN |
 | 🎥 **1080p Walkthrough Video** | [`stocksense_demo_walkthrough.mp4`](stocksense_demo_walkthrough.mp4) | High-definition 2-minute automated walkthrough |
 | 📖 **Interactive API Swagger** | `http://localhost:8000/docs` | OpenAPI 3.0 interactive specification |
 | 📂 **GitHub Repository** | [sathwik328/Odoo-Hackathon](https://github.com/sathwik328/Odoo-Hackathon) | Monorepo source code & test suites |
