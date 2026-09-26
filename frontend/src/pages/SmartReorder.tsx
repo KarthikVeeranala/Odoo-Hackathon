@@ -334,12 +334,12 @@ export const SmartReorder: React.FC = () => {
                         >
                           {item.current_stock}
                         </span>{' '}
-                        <span className="text-xs text-slate-400">{item.uom}</span>
+                        <span className="text-xs text-slate-400">{(item.uom || 'units').replace(/unitsunits/gi, 'units')}</span>
                       </td>
 
                       {/* Safety Stock */}
                       <td className="py-3 px-4 text-right text-slate-600">
-                        {item.safety_stock} <span className="text-xs text-slate-400">{item.uom}</span>
+                        {item.safety_stock} <span className="text-xs text-slate-400">{(item.uom || 'units').replace(/unitsunits/gi, 'units')}</span>
                       </td>
 
                       {/* Average Daily Usage */}
@@ -367,7 +367,7 @@ export const SmartReorder: React.FC = () => {
 
                       {/* Reorder Quantity */}
                       <td className="py-3 px-4 text-right font-semibold text-indigo-700">
-                        +{item.reorder_quantity} <span className="text-xs text-slate-400 font-normal">{item.uom}</span>
+                        +{item.reorder_quantity} <span className="text-xs text-slate-400 font-normal">{(item.uom || 'units').replace(/unitsunits/gi, 'units')}</span>
                       </td>
 
                       {/* Urgency Badge */}
